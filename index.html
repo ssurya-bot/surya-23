@@ -1,11 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyFlow - Student Productivity Hub</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyFlow - Student Productivity Hub</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f4f5fb;
+    color: #222;
+}
+
+header {
+    background: #6254d9;
+    color: white;
+    padding: 20px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    min-height: 90vh;
+}
+
+.sidebar {
+    width: 220px;
+    background: white;
+    padding: 20px 12px;
+}
+
+.sidebar button {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.sidebar button:hover,
+.sidebar button.active {
+    background: #e8e5ff;
+    color: #6254d9;
+}
+
+main {
+    flex: 1;
+    padding: 30px;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(170px,1fr));
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px #00000010;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    color: #6254d9;
+    margin-bottom: 12px;
+}
+
+.card p {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 140px;
+}
+
+.primary {
+    background: #6254d9;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    margin: 8px 5px 8px 0;
+}
+
+.delete {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.item {
+    background: white;
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.item.done span {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.timer {
+    font-size: 65px;
+    font-weight: bold;
+    text-align: center;
+    margin: 25px;
+    color: #6254d9;
+}
+
+.center {
+    text-align: center;
+}
+
+.progress-bg {
+    height: 18px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #6254d9;
+    transition: 0.3s;
+}
+
+body.dark {
+    background: #151827;
+    color: white;
+}
+
+.dark .sidebar,
+.dark .card,
+.dark .item {
+    background: #252a40;
+    color: white;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+    background: #30364c;
+    color: white;
+}
+
+@media(max-width:700px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .sidebar button {
+        min-width: 120px;
+    }
+
+    main {
+        padding: 18px;
+    }
+}
+</style>
 </head>
+
 <body>
 
 <header>
@@ -26,6 +241,7 @@
 
 <main>
 
+<!-- DASHBOARD -->
 <section id="dashboard" class="section active">
     <h2>Welcome to StudyFlow! 👋</h2>
     <p>Plan your day. Focus on your goals. Achieve more.</p>
@@ -35,14 +251,17 @@
             <h3>Total Tasks</h3>
             <p id="totalTasks">0</p>
         </div>
+
         <div class="card">
             <h3>Completed</h3>
             <p id="completedTasks">0</p>
         </div>
+
         <div class="card">
             <h3>Pending</h3>
             <p id="pendingTasks">0</p>
         </div>
+
         <div class="card">
             <h3>Completion</h3>
             <p id="percentage">0%</p>
@@ -51,12 +270,13 @@
 
     <div class="card">
         <h3>Today's Motivation</h3>
-        <p class="motivation">
+        <p style="font-size:18px">
             Small progress every day leads to big results!
         </p>
     </div>
 </section>
 
+<!-- TASKS -->
 <section id="tasks" class="section">
     <h2>My Tasks ✅</h2>
 
@@ -75,6 +295,7 @@
     <div id="taskList"></div>
 </section>
 
+<!-- TIMETABLE -->
 <section id="timetable" class="section">
     <h2>My Timetable 📅</h2>
 
@@ -86,6 +307,7 @@
     <div id="scheduleList"></div>
 </section>
 
+<!-- TIMER -->
 <section id="timer" class="section center">
     <h2>Focus Timer ⏱</h2>
 
@@ -98,6 +320,7 @@
     <p id="timerMessage">Ready to focus?</p>
 </section>
 
+<!-- NOTES -->
 <section id="notes" class="section">
     <h2>My Notes 📝</h2>
 
@@ -109,6 +332,7 @@
     <div id="noteList"></div>
 </section>
 
+<!-- PROGRESS -->
 <section id="progress" class="section">
     <h2>My Progress 📊</h2>
 
@@ -132,6 +356,286 @@
 </main>
 </div>
 
-<script src="script.js"></script>
+<script>
+
+// NAVIGATION
+function showPage(page, button) {
+    document.querySelectorAll(".section").forEach(s => {
+        s.classList.remove("active");
+    });
+
+    document.getElementById(page).classList.add("active");
+
+    document.querySelectorAll(".sidebar button").forEach(b => {
+        b.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+// DARK MODE
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+
+    localStorage.setItem(
+        "darkMode",
+        document.body.classList.contains("dark")
+    );
+}
+
+if(localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+}
+
+// TASK MANAGER
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function addTask() {
+    let name = document.getElementById("taskInput").value.trim();
+    let priority = document.getElementById("priority").value;
+    let deadline = document.getElementById("deadline").value;
+
+    if(name === "") {
+        alert("Please enter a task!");
+        return;
+    }
+
+    tasks.push({
+        name: name,
+        priority: priority,
+        deadline: deadline,
+        done: false
+    });
+
+    document.getElementById("taskInput").value = "";
+    document.getElementById("deadline").value = "";
+
+    saveTasks();
+}
+
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    displayTasks();
+    updateStats();
+}
+
+function displayTasks() {
+    let list = document.getElementById("taskList");
+    list.innerHTML = "";
+
+    tasks.forEach((task,index) => {
+        let div = document.createElement("div");
+        div.className = "item" + (task.done ? " done" : "");
+
+        let span = document.createElement("span");
+        span.textContent = task.name + " | " + task.priority +
+            " | " + (task.deadline || "No deadline");
+
+        let actions = document.createElement("div");
+
+        let check = document.createElement("input");
+        check.type = "checkbox";
+        check.style.width = "auto";
+        check.checked = task.done;
+
+        check.onchange = function() {
+            tasks[index].done = check.checked;
+            saveTasks();
+        };
+
+        let del = document.createElement("button");
+        del.className = "delete";
+        del.textContent = "Delete";
+
+        del.onclick = function() {
+            tasks.splice(index,1);
+            saveTasks();
+        };
+
+        actions.append(check,del);
+        div.append(span,actions);
+        list.appendChild(div);
+    });
+}
+
+// DASHBOARD AND PROGRESS
+function updateStats() {
+    let total = tasks.length;
+    let completed = tasks.filter(t => t.done).length;
+    let pending = total - completed;
+
+    let percent = total === 0 ? 0 :
+        Math.round(completed / total * 100);
+
+    document.getElementById("totalTasks").textContent = total;
+    document.getElementById("completedTasks").textContent = completed;
+    document.getElementById("pendingTasks").textContent = pending;
+    document.getElementById("percentage").textContent = percent + "%";
+
+    document.getElementById("pTotal").textContent = total;
+    document.getElementById("pCompleted").textContent = completed;
+    document.getElementById("pPending").textContent = pending;
+
+    document.getElementById("progressText").textContent =
+        percent + "% Completed";
+
+    document.getElementById("progressBar").style.width =
+        percent + "%";
+}
+
+// TIMETABLE
+let schedules = JSON.parse(localStorage.getItem("schedules")) || [];
+
+function addSchedule() {
+    let subject = document.getElementById("subject").value.trim();
+    let time = document.getElementById("time").value;
+
+    if(subject === "" || time === "") {
+        alert("Enter subject and time!");
+        return;
+    }
+
+    schedules.push({subject,time});
+
+    localStorage.setItem("schedules",JSON.stringify(schedules));
+
+    document.getElementById("subject").value = "";
+    document.getElementById("time").value = "";
+
+    displaySchedules();
+}
+
+function displaySchedules() {
+    let list = document.getElementById("scheduleList");
+    list.innerHTML = "";
+
+    schedules.sort((a,b) => a.time.localeCompare(b.time));
+
+    schedules.forEach((item,index) => {
+        let div = document.createElement("div");
+        div.className = "item";
+
+        let span = document.createElement("span");
+        span.textContent = item.time + " - " + item.subject;
+
+        let del = document.createElement("button");
+        del.className = "delete";
+        del.textContent = "Delete";
+
+        del.onclick = function() {
+            schedules.splice(index,1);
+            localStorage.setItem("schedules",JSON.stringify(schedules));
+            displaySchedules();
+        };
+
+        div.append(span,del);
+        list.appendChild(div);
+    });
+}
+
+// FOCUS TIMER
+let seconds = 25 * 60;
+let timer = null;
+
+function updateClock() {
+    let min = Math.floor(seconds / 60);
+    let sec = seconds % 60;
+
+    document.getElementById("clock").textContent =
+        String(min).padStart(2,"0") + ":" +
+        String(sec).padStart(2,"0");
+}
+
+function startTimer() {
+    if(timer !== null) return;
+
+    timer = setInterval(function() {
+        if(seconds > 0) {
+            seconds--;
+            updateClock();
+        } else {
+            clearInterval(timer);
+            timer = null;
+
+            document.getElementById("timerMessage").textContent =
+                "Great job! Study session completed.";
+
+            alert("Your focus session is complete!");
+        }
+    },1000);
+}
+
+function pauseTimer() {
+    clearInterval(timer);
+    timer = null;
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    timer = null;
+    seconds = 25 * 60;
+    updateClock();
+
+    document.getElementById("timerMessage").textContent =
+        "Ready to focus?";
+}
+
+// NOTES
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+function saveNote() {
+    let title = document.getElementById("noteTitle").value.trim();
+    let content = document.getElementById("noteInput").value.trim();
+
+    if(title === "" || content === "") {
+        alert("Enter title and note!");
+        return;
+    }
+
+    notes.push({title,content});
+
+    localStorage.setItem("notes",JSON.stringify(notes));
+
+    document.getElementById("noteTitle").value = "";
+    document.getElementById("noteInput").value = "";
+
+    displayNotes();
+}
+
+function displayNotes() {
+    let list = document.getElementById("noteList");
+    list.innerHTML = "";
+
+    notes.forEach((note,index) => {
+        let div = document.createElement("div");
+        div.className = "item";
+
+        let span = document.createElement("span");
+        span.textContent = note.title + ": " + note.content;
+
+        let del = document.createElement("button");
+        del.className = "delete";
+        del.textContent = "Delete";
+
+        del.onclick = function() {
+            notes.splice(index,1);
+            localStorage.setItem("notes",JSON.stringify(notes));
+            displayNotes();
+        };
+
+        div.append(span,del);
+        list.appendChild(div);
+    });
+}
+
+// INITIALIZE
+displayTasks();
+displaySchedules();
+displayNotes();
+updateStats();
+updateClock();
+
+</script>
+
 </body>
 </html>

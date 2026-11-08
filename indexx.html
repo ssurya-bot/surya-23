@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyFlow - Student Productivity Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>📚 StudyFlow</h1>
+    <button onclick="toggleTheme()">🌙 Theme</button>
+</header>
+
+<div class="container">
+
+<nav class="sidebar">
+    <button class="active" onclick="showPage('dashboard',this)">🏠 Dashboard</button>
+    <button onclick="showPage('tasks',this)">✅ My Tasks</button>
+    <button onclick="showPage('timetable',this)">📅 Timetable</button>
+    <button onclick="showPage('timer',this)">⏱ Focus Timer</button>
+    <button onclick="showPage('notes',this)">📝 My Notes</button>
+    <button onclick="showPage('progress',this)">📊 Progress</button>
+</nav>
+
+<main>
+
+<section id="dashboard" class="section active">
+    <h2>Welcome to StudyFlow! 👋</h2>
+    <p>Plan your day. Focus on your goals. Achieve more.</p>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Total Tasks</h3>
+            <p id="totalTasks">0</p>
+        </div>
+        <div class="card">
+            <h3>Completed</h3>
+            <p id="completedTasks">0</p>
+        </div>
+        <div class="card">
+            <h3>Pending</h3>
+            <p id="pendingTasks">0</p>
+        </div>
+        <div class="card">
+            <h3>Completion</h3>
+            <p id="percentage">0%</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Today's Motivation</h3>
+        <p class="motivation">
+            Small progress every day leads to big results!
+        </p>
+    </div>
+</section>
+
+<section id="tasks" class="section">
+    <h2>My Tasks ✅</h2>
+
+    <input id="taskInput" placeholder="Enter your task">
+
+    <select id="priority">
+        <option>Low</option>
+        <option>Medium</option>
+        <option>High</option>
+    </select>
+
+    <input type="date" id="deadline">
+
+    <button class="primary" onclick="addTask()">Add Task +</button>
+
+    <div id="taskList"></div>
+</section>
+
+<section id="timetable" class="section">
+    <h2>My Timetable 📅</h2>
+
+    <input id="subject" placeholder="Subject name">
+    <input type="time" id="time">
+
+    <button class="primary" onclick="addSchedule()">Add Schedule</button>
+
+    <div id="scheduleList"></div>
+</section>
+
+<section id="timer" class="section center">
+    <h2>Focus Timer ⏱</h2>
+
+    <div class="timer" id="clock">25:00</div>
+
+    <button class="primary" onclick="startTimer()">Start</button>
+    <button class="primary" onclick="pauseTimer()">Pause</button>
+    <button class="primary" onclick="resetTimer()">Reset</button>
+
+    <p id="timerMessage">Ready to focus?</p>
+</section>
+
+<section id="notes" class="section">
+    <h2>My Notes 📝</h2>
+
+    <input id="noteTitle" placeholder="Note title">
+    <textarea id="noteInput" placeholder="Write your study notes here..."></textarea>
+
+    <button class="primary" onclick="saveNote()">Save Note</button>
+
+    <div id="noteList"></div>
+</section>
+
+<section id="progress" class="section">
+    <h2>My Progress 📊</h2>
+
+    <div class="card">
+        <h3>Task Completion</h3>
+        <p id="progressText">0% Completed</p>
+
+        <div class="progress-bg">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Study Statistics</h3>
+        <p>Total Tasks: <span id="pTotal">0</span></p>
+        <p>Completed: <span id="pCompleted">0</span></p>
+        <p>Pending: <span id="pPending">0</span></p>
+    </div>
+</section>
+
+</main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
